@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mental Fitness Tracker</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            background-color: #F7F9FC;
+            overflow-x: hidden;
+            transition: background-color 0.3s ease;
+        }
+        header {
+            background-color: #4A90E2;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            margin: 0 15px;
+            font-size: 1.1em;
+            transition: color 0.3s ease;
+        }
+        nav a:hover {
+            color: #B3E5FC;
+        }
+        .hero {
+            text-align: center;
+            padding: 70px 20px;
+            background: linear-gradient(135deg, #4A90E2 0%, #D5E1DF 100%);
+            color: #fff;
+            animation: fadeIn 2s ease-in-out;
+        }
+        .hero h1 {
+            margin: 0;
+            font-size: 3.5em;
+            font-weight: bold;
+        }
+        .hero p {
+            font-size: 1.6em;
+            margin: 20px 0;
+        }
+        .section {
+            padding: 20px;
+            display: none;
+            animation: fadeIn 1s ease-in-out;
+        }
+        .section.active {
+            display: block;
+        }
+        .login, .signup, .dashboard {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            animation: slideIn 0.5s ease-out;
+        }
+        .login h2, .signup h2, .dashboard h2 {
+            margin-top: 0;
+            color: #4A90E2;
+        }
+        input[type="text"], input[type="password"], input[type="email"], input[type="submit"], select {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin: 12px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .button {
+            background-color: #4A90E2;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 1.1em;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .button:hover {
+            background-color: #357ABD;
+            transform: scale(1.05);
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #4A90E2;
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: white;
+        }
+        .features, .testimonials {
+            margin-top: 40px;
+            text-align: center;
+        }
+        .feature-item, .testimonial-item {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            margin: 10px;
+            width: 300px;
+            transition: transform 0.3s ease;
+            display: inline-block;
+            vertical-align: top;
+        }
+        .feature-item:hover, .testimonial-item:hover {
+            transform: translateY(-10px);
+        }
+        .testimonial-item {
+            width: calc(33% - 40px);
+        }
+        .log-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .log-list li {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .log-list li button {
+            background-color: #FF6F61;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+        #mood-tracker {
+            margin-bottom: 40px;
+        }
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.8em;
+            }
+            .hero p {
+                font-size: 1.4em;
+            }
+            .login, .signup, .dashboard {
+                max-width: 90%;
+            }
+            .testimonial-item {
+                width: calc(100% - 40px);
+            }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideIn {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="#home" id="link-home">Home</a>
+            <a href="#login" id="link-login">Login</a>
+            <a href="#signup" id="link-signup">Sign Up</a>
+            <a href="#dashboard" id="link-dashboard">Dashboard</a>
+        </nav>
+    </header>
+
+    <div class="hero" id="home">
+        <h1>Mental Fitness Tracker</h1>
+        <p>Your journey to better mental health starts here.</p>
+    </div>
+
+    <div class="section" id="login">
+        <div class="login">
+            <h2>Login</h2>
+            <form id="login-form">
+                <input type="text" id="login-username" placeholder="Username" required>
+                <input type="password" id="login-password" placeholder="Password" required>
+                <input type="submit" value="Login" class="button">
+            </form>
+            <p>Don't have an account? <a href="#signup" id="link-to-signup">Sign Up</a></p>
+        </div>
+    </div>
+
+    <div class="section" id="signup">
+        <div class="signup">
+            <h2>Sign Up</h2>
+            <form id="signup-form">
+                <input type="text" id="signup-username" placeholder="Username" required>
+                <input type="email" id="signup-email" placeholder="Email" required>
+                <input type="password" id="signup-password" placeholder="Password" required>
+                <input type="submit" value="Sign Up" class="button">
+            </form>
+            <p>Already have an account? <a href="#login" id="link-to-login">Login</a></p>
+        </div>
+    </div>
+
+    <div class="section" id="dashboard">
+        <div class="dashboard">
+            <h2>Welcome Back, <span id="username"></span>!</h2>
+            
+            <div class="mood-tracker" id="mood-tracker">
+                <h3>Track Your Mood</h3>
+                <form id="mood-form">
+                    <label for="question1">1. How do you feel today?</label>
+                    <select id="question1">
+                        <option value="1">Very Bad</option>
+                        <option value="2">Bad</option>
+                        <option value="3">Neutral</option>
+                        <option value="4">Good</option>
+                        <option value="5">Very Good</option>
+                    </select>
+
+                    <label for="question2">2. How stressed are you?</label>
+                    <select id="question2">
+                        <option value="1">Very Stressed</option>
+                        <option value="2">Stressed</option>
+                        <option value="3">Neutral</option>
+                        <option value="4">Relaxed</option>
+                        <option value="5">Very Relaxed</option>
+                    </select>
+
+                    <label for="question3">3. How much sleep did you get last night?</label>
+                    <select id="question3">
+                        <option value="1">Very Little</option>
+                        <option value="2">Little</option>
+                        <option value="3">Average</option>
+                        <option value="4">Good</option>
+                        <option value="5">Very Good</option>
+                    </select>
+
+                    <label for="question4">4. How productive were you today?</label>
+                    <select id="question4">
+                        <option value="1">Not Productive</option>
+                        <option value="2">Slightly Productive</option>
+                                               <option value="3">Moderately Productive</option>
+                        <option value="4">Very Productive</option>
+                        <option value="5">Extremely Productive</option>
+                    </select>
+
+                    <input type="submit" value="Save Mood" class="button">
+                </form>
+                <div id="mood-log">
+                    <h3>Mood Log</h3>
+                    <ul class="log-list" id="log-list"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section" id="home">
+        <div class="features">
+            <h2>Why Choose Us?</h2>
+            <div class="feature-item">
+                <h3>Personalized Tracking</h3>
+                <p>Track your mental health with personalized questions that adapt to your needs.</p>
+            </div>
+            <div class="feature-item">
+                <h3>Data Insights</h3>
+                <p>Gain insights into your mental well-being with detailed analytics and mood logs.</p>
+            </div>
+            <div class="feature-item">
+                <h3>Easy to Use</h3>
+                <p>Our user-friendly interface makes tracking your mental health easy and intuitive.</p>
+            </div>
+        </div>
+
+        <div class="testimonials">
+            <h2>What Our Users Say</h2>
+            <div class="testimonial-item">
+                <p>"This tracker has helped me become more aware of my mental health. Highly recommended!"</p>
+                <p>- Alex J.</p>
+            </div>
+            <div class="testimonial-item">
+                <p>"I love how easy it is to track my mood and see trends over time. It's been a game-changer for me."</p>
+                <p>- Jamie L.</p>
+            </div>
+            <div class="testimonial-item">
+                <p>"A fantastic tool for maintaining mental wellness. The features are top-notch and very helpful."</p>
+                <p>- Taylor R.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2024 Mental Fitness Tracker. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const loginLink = document.getElementById('link-login');
+        const signupLink = document.getElementById('link-signup');
+        const dashboardLink = document.getElementById('link-dashboard');
+        const homeSection = document.getElementById('home');
+        const loginSection = document.getElementById('login');
+        const signupSection = document.getElementById('signup');
+        const dashboardSection = document.getElementById('dashboard');
+        const loginForm = document.getElementById('login-form');
+        const signupForm = document.getElementById('signup-form');
+        const moodForm = document.getElementById('mood-form');
+        const moodLog = document.getElementById('log-list');
+        const usernameDisplay = document.getElementById('username');
+        
+        let loggedIn = false;
+        let currentUser = '';
+        
+        // Handle navigation between sections
+        function hideAllSections() {
+            homeSection.classList.remove('active');
+            loginSection.classList.remove('active');
+            signupSection.classList.remove('active');
+            dashboardSection.classList.remove('active');
+        }
+        
+        loginLink.addEventListener('click', () => {
+            hideAllSections();
+            loginSection.classList.add('active');
+        });
+
+        signupLink.addEventListener('click', () => {
+            hideAllSections();
+            signupSection.classList.add('active');
+        });
+
+        dashboardLink.addEventListener('click', () => {
+            if (loggedIn) {
+                hideAllSections();
+                dashboardSection.classList.add('active');
+            } else {
+                alert('Please log in first.');
+                loginSection.classList.add('active');
+            }
+        });
+
+        // Login form submission
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+
+            // Simulate login (replace with real authentication logic in production)
+            loggedIn = true;
+            currentUser = username;
+            usernameDisplay.textContent = username;
+            hideAllSections();
+            dashboardSection.classList.add('active');
+        });
+
+        // Signup form submission
+        signupForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('signup-username').value;
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+
+            // Simulate signup (replace with real signup logic in production)
+            alert('Account created successfully! Please log in.');
+            hideAllSections();
+            loginSection.classList.add('active');
+        });
+
+        // Mood form submission
+        moodForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const mood = {
+                question1: document.getElementById('question1').value,
+                question2: document.getElementById('question2').value,
+                question3: document.getElementById('question3').value,
+                question4: document.getElementById('question4').value
+            };
+
+            // Add mood entry to log
+            const logItem = document.createElement('li');
+            const date = new Date().toLocaleString();
+            const message = generateMoodMessage(mood);
+            logItem.innerHTML = `<span>${date}: ${message}</span><button onclick="this.parentElement.remove()">Delete</button>`;
+            moodLog.appendChild(logItem);
+
+            // Clear form
+            moodForm.reset();
+        });
+
+        // Function to generate mood message
+        function generateMoodMessage(mood) {
+            const averageMood = (
+                parseInt(mood.question1) +
+                parseInt(mood.question2) +
+                parseInt(mood.question3) +
+                parseInt(mood.question4)
+            ) / 4;
+
+            if (averageMood <= 2) {
+                return 'It looks like you’re having a tough day. Consider reaching out to a friend or a counselor for support.';
+            } else if (averageMood <= 3) {
+                return 'You’re feeling neutral today. Try to find some small things that make you happy.';
+            } else if (averageMood <= 4) {
+                return 'You seem to be doing well! Keep up the good work and stay positive.';
+            } else {
+                return 'Fantastic! You’re having a great day. Keep it up and maintain this positive momentum.';
+            }
+        }
+
+        // Initialize page
+        homeSection.classList.add('active');
+    </script>
+</body>
+</html>
