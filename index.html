@@ -13,12 +13,14 @@
             background-color: #F7F9FC;
             overflow-x: hidden;
             transition: background-color 0.3s ease;
+            line-height: 1.6;
         }
         header {
             background-color: #4A90E2;
             color: white;
             padding: 15px;
             text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         nav a {
             color: white;
@@ -27,13 +29,14 @@
             margin: 0 15px;
             font-size: 1.1em;
             transition: color 0.3s ease;
+            outline: none;
         }
-        nav a:hover {
+        nav a:hover, nav a:focus {
             color: #B3E5FC;
         }
         .hero {
             text-align: center;
-            padding: 70px 20px;
+            padding: 80px 20px;
             background: linear-gradient(135deg, #4A90E2 0%, #D5E1DF 100%);
             color: #fff;
             animation: fadeIn 2s ease-in-out;
@@ -48,7 +51,7 @@
             margin: 20px 0;
         }
         .section {
-            padding: 20px;
+            padding: 30px 20px;
             display: none;
             animation: fadeIn 1s ease-in-out;
         }
@@ -75,6 +78,11 @@
             margin: 12px 0;
             border: 1px solid #ddd;
             border-radius: 8px;
+            transition: border-color 0.3s ease;
+        }
+        input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus, select:focus {
+            border-color: #4A90E2;
+            outline: none;
         }
         .button {
             background-color: #4A90E2;
@@ -83,13 +91,11 @@
             padding: 15px;
             border-radius: 8px;
             cursor: pointer;
-            text-align: center;
             font-size: 1.1em;
             text-decoration: none;
-            display: inline-block;
             transition: background-color 0.3s ease, transform 0.3s ease;
         }
-        .button:hover {
+        .button:hover, .button:focus {
             background-color: #357ABD;
             transform: scale(1.05);
         }
@@ -97,7 +103,7 @@
             text-align: center;
             padding: 20px;
             background-color: #4A90E2;
-            margin-top: 20px;
+            margin-top: 40px;
             font-size: 1.2em;
             color: white;
         }
@@ -166,6 +172,10 @@
             from { transform: translateY(-20px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
+        .error {
+            color: red;
+            font-size: 0.9em;
+        }
     </style>
 </head>
 <body>
@@ -189,6 +199,7 @@
             <form id="login-form">
                 <input type="text" id="login-username" placeholder="Username" required>
                 <input type="password" id="login-password" placeholder="Password" required>
+                <p class="error" id="login-error"></p>
                 <input type="submit" value="Login" class="button">
             </form>
             <p>Don't have an account? <a href="#signup" id="link-to-signup">Sign Up</a></p>
@@ -202,6 +213,7 @@
                 <input type="text" id="signup-username" placeholder="Username" required>
                 <input type="email" id="signup-email" placeholder="Email" required>
                 <input type="password" id="signup-password" placeholder="Password" required>
+                <p class="error" id="signup-error"></p>
                 <input type="submit" value="Sign Up" class="button">
             </form>
             <p>Already have an account? <a href="#login" id="link-to-login">Login</a></p>
@@ -256,13 +268,14 @@
     </div>
 
     <div class="features">
+        <h2>Features</h2>
         <div class="feature-item">
             <h3>Stress Monitoring</h3>
-            <p> Measures stress levels using physiological metrics like heart rate variability</p>
+            <p>Measures stress levels using physiological metrics like heart rate variability.</p>
         </div>
         <div class="feature-item">
             <h3>Mood Tracking</h3>
-            <p> Logs and analyzes emotions to identify patterns and triggers.</p>
+            <p>Logs and analyzes emotions to identify patterns and triggers.</p>
         </div>
         <div class="feature-item">
             <h3>Mindfulness Reminders</h3>
@@ -271,13 +284,14 @@
     </div>
 
     <div class="testimonials">
+        <h2>Testimonials</h2>
         <div class="testimonial-item">
             <h3>Empowering and Insightful</h3>
             <p>"This app changed my life!" -Adam J</p>
         </div>
         <div class="testimonial-item">
             <h3>A Must-Have for Mental Clarity</h3>
-            <p>"I feel much better since using this app" -Priya M</p>
+            <p>"I feel much better since using this app." -Priya M</p>
         </div>
         <div class="testimonial-item">
             <h3>My Go-To for Mental Well-Being</h3>
@@ -293,6 +307,7 @@
         document.addEventListener("DOMContentLoaded", () => {
             const sections = document.querySelectorAll('.section');
             const navLinks = document.querySelectorAll('nav a');
+            const moodLogList = document.getElementById('mood-log-list');
 
             const showSection = (id) => {
                 sections.forEach(section => {
@@ -333,7 +348,7 @@
                         document.getElementById('username').textContent = username;
                         showSection('dashboard');
                     } else {
-                        alert('Login failed');
+                        document.getElementById('login-error').textContent = 'Login failed. Please check your credentials.';
                     }
                 } catch (error) {
                     console.error('Error:', error);
@@ -345,6 +360,11 @@
                 const username = document.getElementById('signup-username').value;
                 const email = document.getElementById('signup-email').value;
                 const password = document.getElementById('signup-password').value;
+
+                if (username === '' || email === '' || password === '') {
+                    document.getElementById('signup-error').textContent = 'All fields are required.';
+                    return;
+                }
 
                 try {
                     const response = await fetch('http://localhost:3000/signup', {
@@ -359,7 +379,7 @@
                         alert('Sign up successful');
                         showSection('login');
                     } else {
-                        alert('Sign up failed');
+                        document.getElementById('signup-error').textContent = 'Sign up failed. Try again.';
                     }
                 } catch (error) {
                     console.error('Error:', error);
@@ -372,9 +392,13 @@
                 const question2 = document.getElementById('question2').value;
                 const question3 = document.getElementById('question3').value;
 
-                const moodLogList = document.getElementById('mood-log-list');
+                const logId = `log-${Date.now()}`;  // Unique ID based on timestamp
                 const newEntry = document.createElement('li');
-                newEntry.innerHTML = `Date: ${new Date().toLocaleString()} - Mood: ${question1}, Stress: ${question2}, Sleep: ${question3} <button>Delete</button>`;
+                newEntry.setAttribute('id', logId);
+                newEntry.innerHTML = `
+                    Date: ${new Date().toLocaleString()} - Mood: ${question1}, Stress: ${question2}, Sleep: ${question3} 
+                    <button onclick="deleteLog('${logId}')">Delete</button>
+                `;
                 moodLogList.appendChild(newEntry);
 
                 try {
@@ -389,9 +413,24 @@
                     console.error('Error:', error);
                 }
             });
+
+            window.deleteLog = async (logId) => {
+                const logEntry = document.getElementById(logId);
+                if (logEntry) {
+                    // Remove from UI
+                    logEntry.remove();
+
+                    // Simulate server-side deletion
+                    try {
+                        await fetch(`http://localhost:3000/mood-log/${logId}`, {
+                            method: 'DELETE',
+                        });
+                    } catch (error) {
+                        console.error('Error deleting log:', error);
+                    }
+                }
+            };
         });
     </script>
 </body>
 </html>
-
-
